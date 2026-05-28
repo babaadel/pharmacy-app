@@ -1,14 +1,13 @@
-"use client";
 import { useState, useEffect, useCallback } from "react";
 
 // ========== CONSTANTS ==========
 const ADMIN_CREDENTIALS = { username: "admin", password: "pharmacy123" };
 
 const INITIAL_MEDICINES = [
-  { id: 1, name: "باراسيتامول 500mg", category: "مسكنات", quantity: 150, minQuantity: 20, buyPrice: 5, sellPrice: 10, company: "شركة الدواء الذهبي", expiry: "2026-12-01" },
-  { id: 2, name: "أموكسيسيلين 250mg", category: "مضادات حيوية", quantity: 80, minQuantity: 15, buyPrice: 15, sellPrice: 28, company: "فارما بلس", expiry: "2026-08-15" },
-  { id: 3, name: "أوميبرازول 20mg", category: "معدة", quantity: 5, minQuantity: 10, buyPrice: 12, sellPrice: 22, company: "شركة الدواء الذهبي", expiry: "2027-03-20" },
-  { id: 4, name: "فيتامين C 1000mg", category: "فيتامينات", quantity: 200, minQuantity: 30, buyPrice: 8, sellPrice: 15, company: "نيوتري كير", expiry: "2027-06-01" },
+  { id: 1, name: "Paracétamol 500mg", nameFr: "Paracétamol 500mg", category: "مسكنات", quantity: 150, minQuantity: 20, buyPrice: 500, sellPrice: 1000, company: "شركة الدواء الذهبي", expiry: "2026-12-01" },
+  { id: 2, name: "Amoxicilline 250mg", nameFr: "Amoxicilline 250mg", category: "مضادات حيوية", quantity: 80, minQuantity: 15, buyPrice: 1500, sellPrice: 2800, company: "فارما بلس", expiry: "2026-08-15" },
+  { id: 3, name: "Oméprazole 20mg", nameFr: "Oméprazole 20mg", category: "معدة", quantity: 5, minQuantity: 10, buyPrice: 1200, sellPrice: 2200, company: "شركة الدواء الذهبي", expiry: "2027-03-20" },
+  { id: 4, name: "Vitamine C 1000mg", nameFr: "Vitamine C 1000mg", category: "فيتامينات", quantity: 200, minQuantity: 30, buyPrice: 800, sellPrice: 1500, company: "نيوتري كير", expiry: "2027-06-01" },
 ];
 
 const INITIAL_DEBTS = [
@@ -389,12 +388,12 @@ function Dashboard({ medicines, debts, sales, purchases }) {
         </div>
         <div className="stat-card green">
           <div className="stat-icon">💰</div>
-          <div className="stat-value">{todaySales} ر.س</div>
+          <div className="stat-value">{todaySales} أوقية</div>
           <div className="stat-label">مبيعات اليوم</div>
         </div>
         <div className="stat-card purple">
           <div className="stat-icon">📋</div>
-          <div className="stat-value">{totalDebt} ر.س</div>
+          <div className="stat-value">{totalDebt} أوقية</div>
           <div className="stat-label">إجمالي الديون</div>
         </div>
       </div>
@@ -420,7 +419,7 @@ function Dashboard({ medicines, debts, sales, purchases }) {
               <tr key={s.id}>
                 <td>{s.medicine}</td>
                 <td>{s.quantity}</td>
-                <td><span className="badge badge-green">{s.total} ر.س</span></td>
+                <td><span className="badge badge-green">{s.total} أوقية</span></td>
                 <td>{s.date}</td>
                 <td>{s.customer}</td>
               </tr>
@@ -447,7 +446,7 @@ function Medicines({ medicines, setMedicines, setSales, showToast }) {
     m.name.includes(search) || m.category.includes(search) || m.company.includes(search)
   );
 
-  const openAdd = () => { setForm({ name: "", category: "", quantity: "", minQuantity: 10, buyPrice: "", sellPrice: "", company: "", expiry: "" }); setModal("add"); };
+  const openAdd = () => { setForm({ name: "", nameFr: "", category: "", quantity: "", minQuantity: 10, buyPrice: "", sellPrice: "", company: "", expiry: "" }); setModal("add"); };
   const openEdit = m => { setForm({ ...m }); setModal("edit"); };
   const openSell = m => { setSellMed(m); setSellQty(1); setSellCustomer("زبون عادي"); setModal("sell"); };
 
@@ -478,7 +477,7 @@ function Medicines({ medicines, setMedicines, setSales, showToast }) {
     setSales(p => [...p, { id: genId(), medicine: sellMed.name, quantity: sellQty, total, date: today(), customer: sellCustomer }]);
     setSalesState(null);
     setModal(null);
-    showToast(`تم بيع ${sellQty} وحدة من ${sellMed.name} بـ ${total} ر.س`);
+    showToast(`تم بيع ${sellQty} وحدة من ${sellMed.name} بـ ${total} أوقية`);
   };
 
   const stockStatus = m => {
@@ -488,13 +487,14 @@ function Medicines({ medicines, setMedicines, setSales, showToast }) {
   };
 
   const fields = [
-    { key: "name", label: "اسم الدواء", placeholder: "باراسيتامول 500mg" },
+    { key: "name", label: "اسم الدواء (بالفرنسية أو العربية)", placeholder: "Paracétamol 500mg" },
+    { key: "nameFr", label: "الاسم بالفرنسية (اختياري)", placeholder: "Paracétamol 500mg" },
     { key: "category", label: "الفئة", placeholder: "مسكنات" },
     { key: "company", label: "الشركة", placeholder: "شركة الدواء" },
     { key: "quantity", label: "الكمية", type: "number" },
     { key: "minQuantity", label: "حد التنبيه", type: "number" },
-    { key: "buyPrice", label: "سعر الشراء", type: "number" },
-    { key: "sellPrice", label: "سعر البيع", type: "number" },
+    { key: "buyPrice", label: "سعر الشراء (أوقية)", type: "number" },
+    { key: "sellPrice", label: "سعر البيع (أوقية)", type: "number" },
     { key: "expiry", label: "تاريخ الانتهاء", type: "date" },
   ];
 
@@ -524,7 +524,7 @@ function Medicines({ medicines, setMedicines, setSales, showToast }) {
                 </td>
                 <td><span className="badge badge-blue">{m.category}</span></td>
                 <td><strong>{m.quantity}</strong> <span style={{ color: "var(--text2)", fontSize: "0.8rem" }}>/ حد: {m.minQuantity}</span></td>
-                <td>{m.sellPrice} ر.س</td>
+                <td>{m.sellPrice} أوقية</td>
                 <td>{stockStatus(m)}</td>
                 <td style={{ fontSize: "0.85rem" }}>{m.expiry}</td>
                 <td>
@@ -565,7 +565,7 @@ function Medicines({ medicines, setMedicines, setSales, showToast }) {
             </div>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <span style={{ color: "var(--text2)" }}>سعر الوحدة:</span>
-              <strong style={{ color: "var(--accent3)" }}>{sellMed.sellPrice} ر.س</strong>
+              <strong style={{ color: "var(--accent3)" }}>{sellMed.sellPrice} أوقية</strong>
             </div>
           </div>
           {sellMed.quantity === 0 && <div className="alert alert-danger">⚠️ هذا الدواء نفد من المخزون!</div>}
@@ -579,7 +579,7 @@ function Medicines({ medicines, setMedicines, setSales, showToast }) {
           </div>
           <div style={{ background: "rgba(16,185,129,0.1)", borderRadius: 10, padding: "1rem", textAlign: "center", marginBottom: "0.5rem" }}>
             <span style={{ color: "var(--text2)", fontSize: "0.9rem" }}>الإجمالي: </span>
-            <strong style={{ fontSize: "1.4rem", color: "var(--accent3)" }}>{(sellQty * sellMed.sellPrice) || 0} ر.س</strong>
+            <strong style={{ fontSize: "1.4rem", color: "var(--accent3)" }}>{(sellQty * sellMed.sellPrice) || 0} أوقية</strong>
           </div>
           <div className="modal-footer">
             <button className="btn-cancel" onClick={() => setModal(null)}>إلغاء</button>
@@ -627,7 +627,7 @@ function Purchases({ medicines, setMedicines, purchases, setPurchases, showToast
               <span>📅 {p.date}</span>
             </div>
           </div>
-          <div className="purchase-total">{p.total} ر.س</div>
+          <div className="purchase-total">{p.total} أوقية</div>
         </div>
       ))}
 
@@ -657,7 +657,7 @@ function Purchases({ medicines, setMedicines, purchases, setPurchases, showToast
             <input className="form-input" type="number" min={1} value={form.quantity} onChange={e => setForm(p => ({ ...p, quantity: e.target.value }))} />
           </div>
           <div className="form-group">
-            <label>سعر الشراء للوحدة (ر.س)</label>
+            <label>سعر الشراء للوحدة (أوقية)</label>
             <input className="form-input" type="number" value={form.buyPrice} onChange={e => setForm(p => ({ ...p, buyPrice: e.target.value }))} />
           </div>
           <div className="form-group">
@@ -667,7 +667,7 @@ function Purchases({ medicines, setMedicines, purchases, setPurchases, showToast
           {form.quantity && form.buyPrice && (
             <div style={{ background: "rgba(0,212,255,0.08)", borderRadius: 10, padding: "0.75rem", textAlign: "center", marginBottom: "0.5rem" }}>
               <span style={{ color: "var(--text2)" }}>إجمالي الفاتورة: </span>
-              <strong style={{ color: "var(--accent)" }}>{(+form.quantity * +form.buyPrice).toFixed(2)} ر.س</strong>
+              <strong style={{ color: "var(--accent)" }}>{(+form.quantity * +form.buyPrice).toFixed(2)} أوقية</strong>
             </div>
           )}
           <div className="modal-footer">
@@ -720,7 +720,7 @@ function Debts({ debts, setDebts, showToast }) {
           <button key={v} className={`btn-small ${filter === v ? "btn-pay" : ""}`} style={{ border: "1px solid var(--border)", borderRadius: 8, padding: "0.4rem 0.9rem", cursor: "pointer", fontFamily: "Cairo", color: filter === v ? "var(--accent3)" : "var(--text2)", background: "none" }} onClick={() => setFilter(v)}>{l}</button>
         ))}
         <span style={{ marginRight: "auto", color: "var(--danger)", fontWeight: 700, alignSelf: "center" }}>
-          إجمالي غير مسدد: {totalUnpaid} ر.س
+          إجمالي غير مسدد: {totalUnpaid} أوقية
         </span>
       </div>
 
@@ -733,7 +733,7 @@ function Debts({ debts, setDebts, showToast }) {
               <div className="debt-name">{d.name}</div>
               {d.phone && <div style={{ fontSize: "0.85rem", color: "var(--text2)" }}>📞 {d.phone}</div>}
             </div>
-            <div className={`debt-amount ${d.paid ? "paid" : ""}`}>{d.amount} ر.س</div>
+            <div className={`debt-amount ${d.paid ? "paid" : ""}`}>{d.amount} أوقية</div>
           </div>
           <div className="debt-meta">
             {d.notes && <span>📝 {d.notes}</span>}
@@ -752,7 +752,7 @@ function Debts({ debts, setDebts, showToast }) {
           {[
             { key: "name", label: "اسم الدائن", placeholder: "أحمد محمد" },
             { key: "phone", label: "رقم الهاتف", placeholder: "05xxxxxxxx", type: "tel" },
-            { key: "amount", label: "المبلغ (ر.س)", type: "number" },
+            { key: "amount", label: "المبلغ (أوقية)", type: "number" },
             { key: "notes", label: "ماذا أخذ", placeholder: "باراسيتامول + فيتامينات" },
             { key: "date", label: "التاريخ", type: "date" },
           ].map(f => (
@@ -791,22 +791,22 @@ function Reports({ medicines, sales, purchases, debts }) {
         <div className="stat-card green">
           <div className="stat-icon">💰</div>
           <div className="stat-value">{totalSales}</div>
-          <div className="stat-label">إجمالي المبيعات (ر.س)</div>
+          <div className="stat-label">إجمالي المبيعات (أوقية)</div>
         </div>
         <div className="stat-card red">
           <div className="stat-icon">🏭</div>
           <div className="stat-value">{totalPurchases}</div>
-          <div className="stat-label">إجمالي المشتريات (ر.س)</div>
+          <div className="stat-label">إجمالي المشتريات (أوقية)</div>
         </div>
         <div className="stat-card blue">
           <div className="stat-icon">📈</div>
           <div className="stat-value" style={{ color: profit >= 0 ? "var(--accent3)" : "var(--danger)" }}>{profit}</div>
-          <div className="stat-label">صافي الأرباح (ر.س)</div>
+          <div className="stat-label">صافي الأرباح (أوقية)</div>
         </div>
         <div className="stat-card purple">
           <div className="stat-icon">📋</div>
           <div className="stat-value">{unpaidDebts}</div>
-          <div className="stat-label">ديون غير مسددة (ر.س)</div>
+          <div className="stat-label">ديون غير مسددة (أوقية)</div>
         </div>
       </div>
 
