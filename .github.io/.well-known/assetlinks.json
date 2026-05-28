@@ -1,8 +1,0 @@
-[{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "io.github.babaadel.twa",
-        "sha256_cert_fingerprints": ["9B:B7:ED:1D:1F:74:EE:83:BE:E4:0F:F2:FF:B8:C2:AA:5B:C5:53:FE:42:88:0F:C0:20:51:C5:78:44:58:15:58"]
-      }
-    }]
