@@ -18,7 +18,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-title" content="صيدليتي" />
         <link rel="apple-touch-icon" href="/pharmacy-app/icon-192.png" />
-      </head>
+      <script src="/pharmacy-app/register-sw.js"></script>
+</head>
       <body>{children}</body>
     </html>
   );

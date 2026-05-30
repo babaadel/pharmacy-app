@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
+import { saveToFirestore, loadFromFirestore, subscribeToFirestore } from "../lib/useFirestore";
 
 const ADMIN_CREDENTIALS = { username: "admin", password: "pharmacy123" };
 
@@ -718,11 +719,11 @@ export default function PharmacyApp() {
   const [toast, setToast] = useState(null);
   const [notifGranted, setNotifGranted] = useState(false);
 
-  useEffect(() => { saveData("ph_medicines", medicines); }, [medicines]);
-  useEffect(() => { saveData("ph_debts", debts); }, [debts]);
-  useEffect(() => { saveData("ph_sales", sales); }, [sales]);
-  useEffect(() => { saveData("ph_purchases", purchases); }, [purchases]);
-  useEffect(() => { saveData("ph_loggedIn", loggedIn); }, [loggedIn]);
+  useEffect(() => { saveToFirestore("ph_medicines", medicines); }, [medicines]);
+  useEffect(() => { saveToFirestore("ph_debts", debts); }, [debts]);
+  useEffect(() => { saveToFirestore("ph_sales", sales); }, [sales]);
+  useEffect(() => { saveToFirestore("ph_purchases", purchases); }, [purchases]);
+  useEffect(() => { saveToFirestore("ph_loggedIn", loggedIn); }, [loggedIn]);
 
   useEffect(() => {
     if (loggedIn && "Notification" in window) {
