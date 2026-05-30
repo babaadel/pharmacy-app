@@ -719,6 +719,26 @@ export default function PharmacyApp() {
   const [toast, setToast] = useState(null);
   const [notifGranted, setNotifGranted] = useState(false);
 
+  useEffect(() => {
+    const unsub = subscribeToFirestore((data) => {
+      if (data["ph_medicines"]) setMedicines(JSON.parse(data["ph_medicines"]));
+      if (data["ph_debts"]) setDebts(JSON.parse(data["ph_debts"]));
+      if (data["ph_sales"]) setSales(JSON.parse(data["ph_sales"]));
+      if (data["ph_purchases"]) setPurchases(JSON.parse(data["ph_purchases"]));
+    });
+    return () => unsub();
+  }, []);
+
+  useEffect(() => {
+    const unsub = subscribeToFirestore((data) => {
+      if (data["ph_medicines"]) setMedicines(JSON.parse(data["ph_medicines"]));
+      if (data["ph_debts"]) setDebts(JSON.parse(data["ph_debts"]));
+      if (data["ph_sales"]) setSales(JSON.parse(data["ph_sales"]));
+      if (data["ph_purchases"]) setPurchases(JSON.parse(data["ph_purchases"]));
+    });
+    return () => unsub();
+  }, []);
+
   useEffect(() => { saveToFirestore("ph_medicines", medicines); }, [medicines]);
   useEffect(() => { saveToFirestore("ph_debts", debts); }, [debts]);
   useEffect(() => { saveToFirestore("ph_sales", sales); }, [sales]);
