@@ -710,12 +710,12 @@ function Reports({ medicines, sales, purchases, debts }) {
 
 // ========== MAIN APP ==========
 export default function PharmacyApp() {
-  const [loggedIn, setLoggedIn] = useState(() => loadData("ph_loggedIn", false));
+  const [loggedIn, setLoggedIn] = useState(false);
   const [tab, setTab] = useState("dashboard");
-  const [medicines, setMedicines] = useState(() => loadData("ph_medicines", INITIAL_MEDICINES));
-  const [debts, setDebts] = useState(() => loadData("ph_debts", INITIAL_DEBTS));
-  const [sales, setSales] = useState(() => loadData("ph_sales", INITIAL_SALES));
-  const [purchases, setPurchases] = useState(() => loadData("ph_purchases", INITIAL_PURCHASES));
+  const [medicines, setMedicines] = useState(INITIAL_MEDICINES);
+  const [debts, setDebts] = useState(INITIAL_DEBTS);
+  const [sales, setSales] = useState(INITIAL_SALES);
+  const [purchases, setPurchases] = useState(INITIAL_PURCHASES);
   const [toast, setToast] = useState(null);
   const [notifGranted, setNotifGranted] = useState(false);
 
